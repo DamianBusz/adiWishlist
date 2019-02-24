@@ -1,7 +1,8 @@
 import React, { Fragment, Component } from 'react';
 import {
 	getAdidasProductDetail as getAdidasProductDetailAction,
-	changePreviewURL as changePreviewURLAction
+	changePreviewURL as changePreviewURLAction,
+	addProductToWishlist as addProductToWishlistAction,
 } from '../../store/actions/detailsActions';
 import { connect } from 'react-redux';
 import Menu from '../../components/Menu';
@@ -9,7 +10,7 @@ import Rating from '../../components/Rating';
 import DetailsCardDummy from '../../components/DetailsCardDummy';
 import RatingBig from '../../components/RatingBig';
 import RatingDistribution from '../../components/RatingDistribution';
-import { Circle } from 'rc-progress';
+
 
 class DetailsView extends Component {
 	componentWillMount() {
@@ -21,6 +22,28 @@ class DetailsView extends Component {
 	changePreviewUrlClick = (url) => {
 		const { changePreviewURL } = this.props;
 		changePreviewURL(url);
+	};
+
+	onWishlistClick = () => {
+		const { name, mainImage, pricing_information, brand, addProductToWishlist } = this.props;
+		console.log({
+			name: name,
+			mainImage: mainImage,
+			pricing_information: pricing_information,
+			brand: brand
+		});
+		addProductToWishlist({
+			name: name,
+			image: mainImage,
+			review_rating: "213",
+			review_count: "123",
+			product_id: "d234",
+			url: "131312",
+			sub_title: "123123",
+			is_cloudary_image: false,
+			price: pricing_information.standard_price,
+			sale_price: 231
+		})
 	};
 	render() {
 		const {
@@ -36,8 +59,8 @@ class DetailsView extends Component {
 			overallRating,
 			ratingLoading,
 			ratingDistribution,
-      reviewCount,
-      recommendationPercentage
+			reviewCount,
+			recommendationPercentage
 		} = this.props;
 		return (
 			<Fragment>
@@ -77,7 +100,7 @@ class DetailsView extends Component {
 										<div className="model-name">{name}</div>
 
 										<div className="model-price">&#xa3; {pricing_information.currentPrice}</div>
-										<div className="model-icon">
+										<div className="model-icon" onClick={this.onWishlistClick}>
 											<i className="fa fa-heart-o" /> Add to wishlist
 										</div>
 									</div>
@@ -107,7 +130,7 @@ class DetailsView extends Component {
 							<div className="row roll-in-right row-top fade-in">
 								<div className="col">
 									<div className="big-title">
-										<span>More info</span>
+										<span>About</span>
 									</div>
 								</div>
 							</div>
@@ -133,10 +156,9 @@ class DetailsView extends Component {
 									</div>
 								</div>
 							</div>
-              {ratingLoading ? null : (
-							<div className="row roll-in-right fade-in">
-								<div className="col-md-6">
-								
+							{ratingLoading ? null : (
+								<div className="row roll-in-right fade-in">
+									<div className="col-md-6">
 										<Fragment>
 											<RatingBig overallRating={overallRating} />
 											<div className="reviews">
@@ -144,15 +166,16 @@ class DetailsView extends Component {
 											</div>
 											<RatingDistribution data={ratingDistribution} reviewCount={reviewCount} />
 										</Fragment>
-								
-								</div>
+									</div>
 
-								<div className="col-md-6" >
-                <div className="recommended"><span>{recommendationPercentage}%</span><p>of customers recommender this product</p> </div>
-                </div> 
-               
-							</div>
-              	)}
+									<div className="col-md-6">
+										<div className="recommended">
+											<span>{recommendationPercentage}%</span>
+											<p>of customers recommender this product</p>{' '}
+										</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</Fragment>
 				)}
@@ -176,13 +199,14 @@ const mapStateToProps = (state) => ({
 	ratingLoading: state.getIn([ 'details', 'ratingLoading' ]),
 	overallRating: state.getIn([ 'details', 'overallRating' ]),
 	ratingDistribution: state.getIn([ 'details', 'ratingDistribution' ]),
-  reviewCount: state.getIn([ 'details', 'reviewCount' ]),
-  recommendationPercentage: state.getIn(['details', 'recommendationPercentage'])
+	reviewCount: state.getIn([ 'details', 'reviewCount' ]),
+	recommendationPercentage: state.getIn([ 'details', 'recommendationPercentage' ])
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getAdidasProductDetail: (value) => dispatch(getAdidasProductDetailAction(value)),
-	changePreviewURL: (url) => dispatch(changePreviewURLAction(url))
+	changePreviewURL: (url) => dispatch(changePreviewURLAction(url)),
+	addProductToWishlist:(json) => dispatch(addProductToWishlistAction(json))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsView);

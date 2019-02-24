@@ -26,3 +26,9 @@ export const adidasRatingDataReceived = (json) => ({
 	json
 });
 
+
+export const addProductToWishlist = (json) => ({
+	type: 'ADD_PRODUCT_TO_WISHLIST',
+	json
+})
+
