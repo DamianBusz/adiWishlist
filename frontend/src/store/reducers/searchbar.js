@@ -20,6 +20,7 @@ const reducer = (state = initialState, action) => {
 			return state.set('products', action.json.products).set('suggested', action.json.suggested);
 		case 'SET_SEARCH_NAME':
 			return state.set('lastSearchName', action.name);
+
 		default:
 			return state;
 	}

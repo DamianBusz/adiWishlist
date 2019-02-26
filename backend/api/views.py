@@ -25,10 +25,10 @@ class WishlistAPIView(mixins.CreateModelMixin, ListAPIView):
 
 class WishlistsDetailsAPIView(mixins.DestroyModelMixin ,RetrieveAPIView):
     queryset = Wishlist.objects.all()
-    serializer_class = WishlistSerializerPerId
+    serializer_class = WishlistSerializer
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        return super().get(request, * args, **kwargs)
+        return super().destroy(request, * args, **kwargs)

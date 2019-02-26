@@ -2,19 +2,30 @@ import React, { Fragment, Component } from 'react';
 import {
 	getAdidasProductDetail as getAdidasProductDetailAction,
 	changePreviewURL as changePreviewURLAction,
-	addProductToWishlist as addProductToWishlistAction,
+	addProductToWishlist as addProductToWishlistAction
 } from '../../store/actions/detailsActions';
+import { getWishlist as getWishlistAction } from '../../store/actions/wishlistActions';
 import { connect } from 'react-redux';
-import Menu from '../../components/Menu';
+import Footer from '../../components/Footer';
 import Rating from '../../components/Rating';
 import DetailsCardDummy from '../../components/DetailsCardDummy';
 import RatingBig from '../../components/RatingBig';
 import RatingDistribution from '../../components/RatingDistribution';
-
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import WishlistButton from '../../components/WishlistButton';
 
 class DetailsView extends Component {
+	constructor(props) {
+		super(props);
+
+		this.notificationDOMRef = React.createRef();
+	}
+
 	componentWillMount() {
-		const { getAdidasProductDetail, match } = this.props;
+		const { getAdidasProductDetail, match, getWishlist } = this.props;
+		getWishlist();
+
 		const productID = match.params.productID.toUpperCase();
 		getAdidasProductDetail(productID);
 	}
@@ -24,26 +35,32 @@ class DetailsView extends Component {
 		changePreviewURL(url);
 	};
 
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (prevProps.wishlistStatus !== this.props.wishlistStatus) {
+			this.notificationDOMRef.current.addNotification({
+				title: 'Oops',
+				message: this.props.wishlistNotification,
+				type: this.props.category,
+				insert: 'top',
+				container: 'top-right',
+				animationIn: [ 'animated', 'fadeIn' ],
+				animationOut: [ 'animated', 'fadeOut' ],
+				dismiss: { duration: 2000 },
+				dismissable: { click: true }
+			});
+		}
+	}
+
 	onWishlistClick = () => {
-		const { name, mainImage, pricing_information, brand, addProductToWishlist } = this.props;
-		console.log({
-			name: name,
-			mainImage: mainImage,
-			pricing_information: pricing_information,
-			brand: brand
-		});
+		const { name, mainImage, pricing_information, addProductToWishlist, id, modelNumber } = this.props;
+
 		addProductToWishlist({
 			name: name,
 			image: mainImage,
-			review_rating: "213",
-			review_count: "123",
-			product_id: "d234",
-			url: "131312",
-			sub_title: "123123",
-			is_cloudary_image: false,
-			price: pricing_information.standard_price,
-			sale_price: 231
-		})
+			productId: id,
+			modelId: modelNumber,
+			price: pricing_information.standard_price
+		});
 	};
 	render() {
 		const {
@@ -64,32 +81,17 @@ class DetailsView extends Component {
 		} = this.props;
 		return (
 			<Fragment>
-				<Menu />
 				{detailsLoading ? (
 					<DetailsCardDummy />
 				) : (
 					<Fragment>
+						<ReactNotification ref={this.notificationDOMRef} />
 						<div className="container fade-in ">
 							<div className="row">
 								<div className="col-md-6">
 									<div className="model-img">
 										<div className="model-img-box">
 											<img src={mainImage} alt={name} className="big-preview " />
-										</div>
-										<div className="model-preview">
-											{view_list.slice(0, 3).map((item, index) => {
-												return (
-													<img
-														src={item.image_url}
-														className="image-preview"
-														key={index}
-														alt={`image${index}`}
-														onClick={() => {
-															this.changePreviewUrlClick(item.image_url);
-														}}
-													/>
-												);
-											})}
 										</div>
 									</div>
 								</div>
@@ -100,10 +102,35 @@ class DetailsView extends Component {
 										<div className="model-name">{name}</div>
 
 										<div className="model-price">&#xa3; {pricing_information.currentPrice}</div>
-										<div className="model-icon" onClick={this.onWishlistClick}>
-											<i className="fa fa-heart-o" /> Add to wishlist
-										</div>
+
+										{!this.props.id ? null : (
+											<WishlistButton
+												onWishlistClick={this.onWishlistClick}
+												wishlistProducts={this.props.wishlistProducts}
+												currentItemId={this.props.id}
+											/>
+										)}
 									</div>
+								</div>
+
+								<div className="row">
+									{view_list.slice(0, 3).map((item, index) => {
+										return (
+											<div className="col-md-4" key={index}>
+												<div className="model-preview">
+													<img
+														src={item.image_url}
+														className="image-preview"
+														key={index}
+														alt={`x${index}`}
+														onClick={() => {
+															this.changePreviewUrlClick(item.image_url);
+														}}
+													/>
+												</div>
+											</div>
+										);
+									})}
 								</div>
 							</div>
 						</div>
@@ -143,7 +170,7 @@ class DetailsView extends Component {
 
 								<div className="col-md-6">
 									<div className="model-img">
-										<img src={secondaryImage} alt={name} />
+										<img src={secondaryImage} alt={name} className="big-preview-img" />
 									</div>
 								</div>
 							</div>
@@ -179,6 +206,7 @@ class DetailsView extends Component {
 						</div>
 					</Fragment>
 				)}
+				<Footer />
 			</Fragment>
 		);
 	}
@@ -200,13 +228,19 @@ const mapStateToProps = (state) => ({
 	overallRating: state.getIn([ 'details', 'overallRating' ]),
 	ratingDistribution: state.getIn([ 'details', 'ratingDistribution' ]),
 	reviewCount: state.getIn([ 'details', 'reviewCount' ]),
-	recommendationPercentage: state.getIn([ 'details', 'recommendationPercentage' ])
+	recommendationPercentage: state.getIn([ 'details', 'recommendationPercentage' ]),
+	wishlistProducts: state.getIn([ 'wishlist', 'wishlistProducts' ]),
+	wishlistLoading: state.getIn([ 'wishlist', 'wishlistLoading' ]),
+	wishlistStatus: state.getIn([ 'wishlist', 'wishlistStatus' ]),
+	wishlistNotification: state.getIn([ 'wishlist', 'wishlistNotification' ]),
+	category: state.getIn([ 'wishlist', 'category' ])
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getAdidasProductDetail: (value) => dispatch(getAdidasProductDetailAction(value)),
 	changePreviewURL: (url) => dispatch(changePreviewURLAction(url)),
-	addProductToWishlist:(json) => dispatch(addProductToWishlistAction(json))
+	addProductToWishlist: (json) => dispatch(addProductToWishlistAction(json)),
+	getWishlist: () => dispatch(getWishlistAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsView);

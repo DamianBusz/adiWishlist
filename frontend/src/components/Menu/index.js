@@ -1,34 +1,40 @@
-import React from 'react';
+import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import adidasSvg from '../../assets/Adidas.svg'
-function Menu() {
+import adidasVideo from '../../assets/adidas.mp4';
+import adidasLogo from '../../assets/logo.png';
+
+
+class Menu extends Component {
+  render() {
 	return (
-		<div className="col">
-		<div className="row ">
-		
-			<div className="col-md-4" />
-			<div className="col-md-4">
-				<div className="logo ">
-					<img src={adidasSvg} alt="Logo" className="logo-svg" />
+		<Fragment>
+			<header className="overlay-top">
+				<div className="overlay"></div>
+				<video playsInline="playsinline" autoPlay="autoplay" muted="muted" loop="loop">
+					<source src={adidasVideo} type="video/mp4" />
+				</video>
+				<div className="container h-100">
+					<div className="d-flex h-100 text-center align-items-center">
+						<div className="w-100 text-white">
+							<h1 className="display-3">
+								<img src={adidasLogo} alt="logo" />
+							</h1>
+			
+							<div className="lead mb-0">
+							<span>	<Link to="/">home</Link></span>
+								<span><Link to="/wishlist">wishlist</Link></span>
+								</div>
+							
+							
+						</div>
+					</div>
 				</div>
-			</div>
-			<div className="col-md-4">
-				<div className="menu">
-					<Link to="/">
-						<span>
-							<i className="fa fa-home home" aria-hidden="true" />
-						</span>
-					</Link>
-					<span>
-						<Link to="/">
-							<i className="fa fa-heartbeat wishlist" aria-hidden="true" />
-						</Link>
-					</span>
-				</div>
-			</div>
-		</div>
-		</div>
-	);
+			</header>
+			{this.props.children}
+		</Fragment>
+	)
+  }
 }
+
 
 export default Menu;

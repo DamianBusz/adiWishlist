@@ -8,18 +8,17 @@ class WishlistSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'image',
-            'review_rating',
-            'review_count',
-            'product_id',
-            'url',
-            'sub_title',
-            'is_cloudary_image',
-            'sub_title',
+            'productId',
+            'modelId',
             'price',
-            'sale_price'
+            'timestamp',
         ]
 
-
+    def validate_image(self, value):
+        qs = Wishlist.objects.filter(image__iexact=value)
+        if qs.exists():
+            raise serializers.ValidationError("This item is already in your wishlist")
+        return value 
   
 
 class WishlistSerializerPerId(serializers.ModelSerializer):
@@ -29,15 +28,10 @@ class WishlistSerializerPerId(serializers.ModelSerializer):
             'id',
             'name',
             'image',
-            'review_rating',
-            'review_count',
-            'product_id',
-            'url',
-            'sub_title',
-            'is_cloudary_image',
-            'sub_title',
+            'productId',
+            'modelId',
             'price',
-            'sale_price'
+            'timestamp',
         ]
 
  

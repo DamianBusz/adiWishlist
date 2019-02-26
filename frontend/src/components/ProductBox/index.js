@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 class ProductBox extends Component {
 	onDetailsClick = () => {
 		const { productID, getAdidasProductDetail } = this.props;
-		console.log('details clicked, yay!');
+
 		getAdidasProductDetail(productID.toUpperCase());
 	};
 	render() {
 		const { imageUrl, productName, productTitle, originalPrice, salePrice, productID } = this.props;
 		return (
 			<div className="col-md-3">
+				<Link to={`/details/${productID}`}>
 				<div className="product-box">
 					<div className="product-img">
 						<img src={imageUrl} />
@@ -32,15 +33,16 @@ class ProductBox extends Component {
 								</Fragment>
 							)}
 						</div>
-						<Link to={`/details/${productID}`}>
+					
 							<div className="details">
 								<span className="details-text">
 									<i className="fa fa-expand" /> details
 								</span>
 							</div>
-						</Link>
+						
 					</div>
 				</div>
+				</Link>
 			</div>
 		);
 	}

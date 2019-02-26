@@ -2,12 +2,13 @@ import React, { Fragment, Component } from 'react';
 
 import {
 	changeInputValue as changeInputValueAction,
-	getAdidasSuggestion as getAdidasSuggestionAction
+	getAdidasSuggestion as getAdidasSuggestionAction,
+	setSearchName as setSearchNameAction
 } from '../../store/actions/searchbarActions';
 
 import { connect } from 'react-redux';
 import ProductList from '../../components/ProductList';
-import Menu from '../../components/Menu';
+import Footer from '../../components/Footer';
 
 class StartView extends Component {
 	onChangeSearchbarValue = (event) => {
@@ -18,16 +19,30 @@ class StartView extends Component {
 	onSubmitSearch = (event) => {
 		const { getAdidasSuggestion, value, changeInputValue } = this.props;
 		event.preventDefault();
-		if (value.length > 1) {
-			getAdidasSuggestion(value);
+		const valueWithNoBlank = value.replace(/^[ ]+|[ ]+$/g, '');
+		if (valueWithNoBlank.length > 1) {
+			getAdidasSuggestion(valueWithNoBlank);
+			this.props.history.push(`/search/${valueWithNoBlank}`);
 			changeInputValue('');
 		}
 	};
+
+	componentDidMount() {
+		const { getAdidasSuggestion, match, setSearchName} = this.props;
+		setSearchName('')
+		const pathName = window.location.pathname;
+		let searchString;
+		if (pathName === '/') {
+		} else {
+			searchString = match.params.searchString.replace(/^[ ]+|[ ]+$/g, '');
+			this.props.history.push(`/search/${searchString}`);
+			getAdidasSuggestion(searchString);
+		}
+	}
 	render() {
 		const { products, loadingAdidasData, value, lastSearchName } = this.props;
 		return (
 			<Fragment>
-				<Menu />
 				<div className="black-background ">
 					<div className="container">
 						<div className="row ">
@@ -48,10 +63,21 @@ class StartView extends Component {
 					</div>
 				</div>
 				{loadingAdidasData ? (
-					<ProductList data={products} lastSearchName={lastSearchName} cssStyle="slide-out-left" />
+					<ProductList
+						history={this.props.history}
+						data={products}
+						lastSearchName={lastSearchName}
+						cssStyle="slide-out-left"
+					/>
 				) : (
-					<ProductList data={products} lastSearchName={lastSearchName} cssStyle="slide-in-right" />
+					<ProductList
+						history={this.props.history}
+						data={products}
+						lastSearchName={lastSearchName}
+						cssStyle="slide-in-right"
+					/>
 				)}
+				<Footer/>
 			</Fragment>
 		);
 	}
@@ -66,7 +92,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	changeInputValue: (value) => dispatch(changeInputValueAction(value)),
-	getAdidasSuggestion: (name) => dispatch(getAdidasSuggestionAction(name))
+	getAdidasSuggestion: (name) => dispatch(getAdidasSuggestionAction(name)),
+	setSearchName: (name) => dispatch(setSearchNameAction(name))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartView);

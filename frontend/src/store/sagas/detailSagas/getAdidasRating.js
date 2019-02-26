@@ -9,9 +9,9 @@ export default function* getAdidasProductDetail(action) {
 				Accept: 'application/json'
 			}
 		}).then((response) => response.json());
-	
+
 		yield put({ type: 'ADIDAS_RATING_RECEIVED', json });
-	
+
 	} catch (err) {
 		console.log(err);
 	}

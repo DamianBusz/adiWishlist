@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import ProductBox from '../ProductBox';
-
+import Dummy from '../../assets/dummy.png';
 function ProductList(props) {
 	return (
 		<Fragment>
@@ -42,28 +42,18 @@ function ProductList(props) {
 									<div className="start">
 										<span className="failed-search">Sorry, we couldnt get product named </span>
 										<span className="failed-search-product">{props.lastSearchName}</span>
+										<p className="failed-search">Please, try again with product correct name.</p>
 									</div>
 								</div>
 							</div>
 						</Fragment>
 					) : (
 						<div className={`row ${props.cssStyle}`}>
-							<div className="col">
-								<div className="start">
-									<div className="stripes">
-										<img src="https://www.logolynx.com/images/logolynx/ea/eae9086492a89a68dca800ec7a0e52fa.gif" />
-									</div>
-									<div className="creativity">
-									<span className="failed-search-product">C</span>
-									<span className="failed-search">reativity. </span>
-									</div>
-									<div className="collaboration">
-									<span className="failed-search-product">c</span>
-									<span className="failed-search">ollaboration.</span>
-									</div>
-									<div className="confidence">
-									<span className="failed-search-product">c</span>
-									<span className="failed-search">onfidence.</span>
+							<div className="col-md-12">
+								<div className="start" onClick={() => props.history.push(`/details/db2933`)}>
+									<div className="stripes ">
+										<img src={Dummy} />
+										<span>new dragonball serie >></span>
 									</div>
 								</div>
 							</div>
