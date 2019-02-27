@@ -4,7 +4,7 @@ from .views import WishlistAPIView, WishlistsDetailsAPIView
 
 urlpatterns = [
 
-    path('wishlist/', WishlistAPIView.as_view()),
+    path('wishlist/', WishlistAPIView.as_view(), name='wishlist'),
     path('wishlist/<int:pk>/', WishlistsDetailsAPIView.as_view()),
 
 ]

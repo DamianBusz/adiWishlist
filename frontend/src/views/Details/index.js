@@ -38,7 +38,7 @@ class DetailsView extends Component {
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (prevProps.wishlistStatus !== this.props.wishlistStatus) {
 			this.notificationDOMRef.current.addNotification({
-				title: 'Oops',
+				title: '',
 				message: this.props.wishlistNotification,
 				type: this.props.category,
 				insert: 'top',
@@ -198,7 +198,7 @@ class DetailsView extends Component {
 									<div className="col-md-6">
 										<div className="recommended">
 											<span>{recommendationPercentage}%</span>
-											<p>of customers recommender this product</p>{' '}
+											<p>of customers recommended this product</p>{' '}
 										</div>
 									</div>
 								</div>

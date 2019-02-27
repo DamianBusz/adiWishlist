@@ -11,7 +11,7 @@ class Wishlist extends Component {
 	}
 
 	render() {
-		const { wishlistProducts } = this.props;
+	
 
 		return (
 			<Fragment>

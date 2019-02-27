@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/static/media/dummy.54212692.png"
   },
   {
-    "revision": "0896537a4e8e3e107e80",
-    "url": "/static/css/main.2ecb8605.chunk.css"
+    "revision": "70190ac34e90ddc4e702",
+    "url": "/static/css/main.128c42da.chunk.css"
   },
   {
     "revision": "fdfcfda2d9b1bf31db52",
@@ -16,12 +16,12 @@ self.__precacheManifest = [
     "url": "/static/media/499693.d5e7bda0.jpg"
   },
   {
-    "revision": "9e49996b039c98f05660",
-    "url": "/static/js/2.9e49996b.chunk.js"
+    "revision": "1522aebb9ecd721344b4",
+    "url": "/static/js/2.1522aebb.chunk.js"
   },
   {
-    "revision": "0896537a4e8e3e107e80",
-    "url": "/static/js/main.0896537a.chunk.js"
+    "revision": "70190ac34e90ddc4e702",
+    "url": "/static/js/main.70190ac3.chunk.js"
   },
   {
     "revision": "13661b10daae5adbdcc3b881da111494",
@@ -36,11 +36,11 @@ self.__precacheManifest = [
     "url": "/static/media/texgyreadventor-bold-webfont.c1742494.woff"
   },
   {
-    "revision": "9e49996b039c98f05660",
+    "revision": "1522aebb9ecd721344b4",
     "url": "/static/css/2.b76f5234.chunk.css"
   },
   {
-    "revision": "1ef80132474fc9927a60687c5c6fb9a6",
+    "revision": "fb2ed27fdd87efbbd92a74b0d1f91bcc",
     "url": "/index.html"
   }
 ];
