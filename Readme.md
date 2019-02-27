@@ -48,7 +48,7 @@ docker-compose exec django python manage.py migrate
 ```
 
 At this point our application should be running. 
-Frontend can be found on localhost:
+Frontend can be found here:
 ```
 http://localhost
 ```
