@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+  django:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+      - pip-cache:/root/.cache
+    ports:
+      - "9301:8000"
+    links:
+      - "dev-db:db"
+    environment:
+      - DATABASE_URL=postgresql://postgres@db:5432/postgres
+    stdin_open: true
+    command: gunicorn wishlist.wsgi -w 1 --bind 0.0.0.0:8000 --log-level debug --reload
+    networks:
+      app:
+        aliases:
+          - django
+
+  nginx:
+    image: nginx
+    links:
+      - "django:django"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/build:/var/www/html
+    networks:
+      app:
+        aliases:
+          - nginx
+
+          
+  dev-db:
+    image: postgres:9.6
+    ports:
+      - "5502:5432"
+    networks:
+      app:
+        aliases:
+          - dev-db
+
+volumes:
+  pip-cache:
+    driver: local
+
+networks:
+  app:

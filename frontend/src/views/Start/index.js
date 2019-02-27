@@ -45,11 +45,13 @@ class StartView extends Component {
 			<Fragment>
 				<div className="black-background ">
 					<div className="container">
-						<div className="row ">
-							<div className="col-md-8">
+						<div className="row centered">
+							<div className="col-md-12">
 								<span className="article-text">Lets find your product</span>
 							</div>
-							<div className="col-md-4">
+							</div>
+							<div className="row centered">
+							<div className="col-md-12">
 								<div className="search-form">
 									<form onSubmit={this.onSubmitSearch}>
 										<input type="text" value={value} onChange={this.onChangeSearchbarValue} />

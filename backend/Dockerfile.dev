@@ -1,0 +1,21 @@
+FROM python:3.6.3-slim
+
+MAINTAINER Damian Busz <busz.d@outlook.com>
+
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl unzip libmagic1 && \
+    rm -f /var/log/apt/* && rm -f /var/log/dpkg.log && rm -f /var/cache/apt/*.bin && rm -f /var/cache/apt/archives/*.deb && \
+    rm -f /var/cache/apt/archives/partial/*.deb && rm -f /var/cache/debconf/*-old && rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /var/lib/apt/lists/partial && (find /usr/share/locale -mindepth 1 -maxdepth 1 ! -name "locale.alias" | xargs rm -rf) && \
+    (find /usr/share/doc -depth -type f ! -name copyright | xargs rm -f) && (find /usr/share/doc -empty | xargs rm -rf) && \
+    rm -rf /var/cache/man/* && rm -rf /usr/share/man/* && rm -rf /usr/share/info/* && rm -rf /usr/share/groff/* && \
+    rm -rf /usr/share/linda/* && rm -rf /usr/share/lintian/* 
+
+RUN mkdir -p /app
+EXPOSE 8000
+
+ADD requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
+
+
+ADD . /app
+WORKDIR /app
