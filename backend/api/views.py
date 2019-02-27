@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import WishlistSerializer, WishlistSerializerPerId
@@ -10,10 +9,9 @@ from rest_framework import mixins, permissions, status
 from django.shortcuts import get_object_or_404
 
 class WishlistAPIView(mixins.CreateModelMixin, ListAPIView):
-    passed_id = None
+    """View responsible for retrieving entire list and adding item in wishlist"""
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
-
 
     def get_queryset(self, *args, **kwargs):
         return Wishlist.objects.all()
@@ -24,7 +22,9 @@ class WishlistAPIView(mixins.CreateModelMixin, ListAPIView):
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+
 class WishlistsDetailsAPIView(mixins.DestroyModelMixin ,RetrieveAPIView):
+    """View responsible for retrieving single item and deleting it"""
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
 
