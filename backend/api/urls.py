@@ -1,10 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import WishlistAPIView, WishlistsDetailsAPIView
+from django.conf.urls import url
+from rest_framework import routers
+
+from .views import WishlistViewSet
+
+
+router = routers.DefaultRouter()
+router.register(r'wishlist', WishlistViewSet, base_name='wishlist')
 
 urlpatterns = [
-
-    path('wishlist/', WishlistAPIView.as_view(), name='wishlist'),
-    path('wishlist/<int:pk>/', WishlistsDetailsAPIView.as_view()),
-
+    url(r'^admin/', admin.site.urls),
+    url(r'^', include(router.urls)),
 ]
