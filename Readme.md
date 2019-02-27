@@ -1,9 +1,9 @@
 # adidas wishlist
 
-A task is to create an application that searches for adidas products and gives an option to put specific product to a wishlist. This repository contains both client and server side code. 
-**Backend** is coded with python framework called Django with django_rest_framework(drf)
-**Frontend** is coded with javascript library called React with use of multiple libraries like Redux, Redux-Immutable, Immutable.js, Redux-Saga & React Router v4
-**Routing** of app is being taken care of by Nginx
+A task is to create an application that searches for adidas products and gives an option to put specific product to a wishlist. This repository contains both client and server side code.  <br />
+**Backend** is coded with python framework called Django with django_rest_framework(drf) <br />
+**Frontend** is coded with javascript library called React with use of multiple libraries like Redux, Redux-Immutable, Immutable.js, Redux-Saga & React Router v4 <br /> 
+**Routing** of app is being taken care of by Nginx <br />
 **Database** database used - Postgresql
 
 You can preview project online, here:
