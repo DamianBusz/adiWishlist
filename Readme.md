@@ -6,11 +6,6 @@ A task is to create an application that searches for adidas products and gives a
 **Routing** of app is being taken care of by Nginx <br />
 **Database** database used - Postgresql
 
-You can preview project online, here:
-```
-https://adiwishlist.live
-```
-
 ## Getting Started
 
 ### Prerequisites
